@@ -1,0 +1,502 @@
+<!--
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!--
+<ng-container *ngIf="authenticated">
+  <div id="right-panel" class="right-panel">
+    <div class="container">
+        <div class="content">
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+              <strong>Error:</strong> {{errorMessage}}
+          </div>
+          <div class="breadcrumbs">
+              <div class="breadcrumbs-inner">
+                <div class="page-header">
+                    <div class="page-title">
+                      <h1 class="asset-title text-center" id='assetName'>Transcript</h1>
+                    </div>
+                </div>
+              </div>
+          </div>
+          <br>
+          <div class="content">
+              <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                          <div class="card-header">
+                            <strong class="card-title">Transcript Records</strong>
+                          </div>
+                          <div class="card-body">
+                            <table id="bootstrap-data-table-member" class="table table-striped table-bordered" >
+                                <thead>
+                                  <tr>
+                                      <th class="info text-center align-middle">Student Email</th>
+                                      <th class="info text-center align-middle">Transcript</th>
+                                      <th class="info text-center align-middle">authorized</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let asset of allAssets; let i = index">
+                                      <td class="asset-properties text-center align-middle"><b class="text-dark">{{asset.owner}}</b></td>
+                                      <td class="asset-properties">
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" attr.data-target="#studentTranscript_{{i}}">
+                                            View student Transcript
+                                            </button>
+                                        </div>
+
+                                        <div class="modal fade" id="studentTranscript_{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Student ID: <b class="text-danger">{{asset.owner}}</b> - Transcript</h5>
+                                                  </div>
+                                                  <div class="modal-body" >
+                                                    <table id="table_{{i}}" class="table table-striped table-bordered" >
+                                                        <thead>
+                                                          <tr>
+                                                              <th class="info">Course Name</th>
+                                                              <th class="info">Credits</th>
+                                                              <th class="info">Grade</th>
+                                                          </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                          <tr *ngFor="let element of asset.course">
+                                                              <td class="asset-properties"><b class="text-uppercase text-dark">{{element.courseName}}</b></td>
+                                                              <td class="asset-properties"><b class="text-dark">{{element.courseCredits}}</b></td>
+                                                              <td class="asset-properties"><b class="text-dark">{{element.courseGrade}}</b></td>
+                                                          </tr>
+                                                          <tr class="bg-info text-white">
+                                                              <td colspan="2"><b class="">Average: </b></td>
+                                                              <td class="asset-properties"><b class="">{{asset.avg}}</b></td>
+                                                          </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <button (click)="exportAsPDF('studentTranscript_' + i, 'table_' + i, asset.owner)" type="submit" class="btn btn-success align-middle">Export pdf file</button>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                      </td>
+                                      <td class="asset-properties text-center align-middle">{{asset.authorized}}</td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+    </div>
+  </div>
+</ng-container>
+-->
+
+<ng-container *ngIf="authenticated">
+  <div id="right-panel" class="right-panel">
+   <div class="container">
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+         <strong>Error:</strong> {{errorMessage}}
+      </div>
+      <div class="breadcrumbs">
+         <div class="breadcrumbs-inner">
+            <div class="row m-0">
+               <div class="col-sm-4">
+                  <div class="page-header float-left">
+                     <div class="page-title">
+                        <h1 class="asset-title" id='assetName'>Transcript</h1>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-8">
+                  <div class="page-header float-right">
+                     <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                           <li></li>
+                        </ol>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <br>
+      <div class="content">
+         <div class="animated fadeIn">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="card">
+                     <div class="card-header">
+                        <strong class="card-title">Transcript Records</strong>
+                     </div>
+                     <!--
+                     <div class="card-body">
+                        <input [(ngModel)]="searchText" placeholder="Search by owner.." class="advancedSearchTextbox text-center" id="searchInput">
+                        <table id="bootstrap-data-table-member" class="table table-striped table-bordered" >
+                           <thead>
+                              <tr>
+                                 <th class="info text-center align-middle">Student Email</th>
+                                 <th class="info text-center align-middle">Transcript</th>
+                                 <th class="info text-center align-middle">authorized</th>
+                                 <th class="info text-center align-middle">Actions</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr *ngFor="let asset of allAssets | grdFilter: {owner: searchText}; let i = index;">
+                                 <td class="asset-properties"><b class="text-dark">{{asset.owner}}</b></td>
+                                 <td class="asset-properties">
+                                    <div class="text-center">
+                                       <button type="button" class="btn btn-primary" data-toggle="modal" attr.data-target="#studentTranscript_{{i}}">
+                                       View student Transcript
+                                       </button>
+                                    </div>
+
+                                    <div class="modal fade" id="studentTranscript_{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                          <div class="modal-content">
+                                             <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Student ID: <b class="text-danger">{{asset.owner}}</b> - Transcript</h5>
+                                             </div>
+                                             <div class="modal-body">
+                                                <table id="bootstrap-data-table-member" class="table table-striped table-bordered" >
+                                                   <thead>
+                                                      <tr>
+                                                         <th class="info">Course Name</th>
+                                                         <th class="info">Grade</th>
+                                                      </tr>
+                                                   </thead>
+                                                   <tbody>
+                                                      <tr *ngFor="let element of asset.course">
+                                                         <td class="asset-properties"><b class="text-uppercase text-dark">{{element.courseName}}</b></td>
+                                                         <td class="asset-properties"><b class="text-dark">{{element.courseGrade}}</b></td>
+                                                      </tr>
+                                                      <tr>
+                                                         <td><b class="text-dark">Average: </b></td>
+                                                         <td class="asset-properties"><b class="text-dark">{{asset.avg}}</b></td>
+                                                      </tr>
+                                                      <tr>
+                                                         <td><b class="text-dark">Have a copy Transcript: </b></td>
+                                                         <td class="asset-properties"><b class="text-dark">{{asset.isGiven}}</b></td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                             </div>
+                                             <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </td>
+                                 <td class="asset-properties text-center align-middle">{{asset.authorized}}</td>
+                                 <td class="text-center align-middle">
+                                    <button (click)="setId(asset.owner);" type="button" class="btn btn-delete" data-toggle="modal" data-target="#deleteAssetModal">
+                                       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                          width="13.8px" height="16px" viewBox="0 0 65.9 76.2" style="enable-background:new 0 0 65.9 76.2;" xml:space="preserve">
+                                          <path d="M42.8,60.2V22.6c0-1.7-1.3-3-3-3s-3,1.3-3,3v37.6c0,1.7,1.3,3,3,3S42.8,61.9,42.8,60.2z M29.1,60.2V22.6c0-1.7-1.3-3-3-3
+                                             s-3,1.3-3,3v37.6c0,1.7,1.3,3,3,3S29.1,61.9,29.1,60.2z M56.2,19.6c-1.7,0-3,1.3-3,3V68c0,1.2-1,2.2-2.2,2.2H14.9
+                                             c-1.2,0-2.2-1-2.2-2.2V22.6c0-1.7-1.3-3-3-3s-3,1.3-3,3V68c0,4.5,3.7,8.2,8.2,8.2H51c4.5,0,8.2-3.7,8.2-8.2V22.6
+                                             C59.2,21,57.9,19.6,56.2,19.6z M62.9,10.3H49.3V3c0-1.7-1.3-3-3-3H19.6c-1.7,0-3,1.3-3,3v7.3H3c-1.7,0-3,1.3-3,3s1.3,3,3,3h59.9
+                                             c1.7,0,3-1.3,3-3S64.5,10.3,62.9,10.3z M43.3,10.3H22.6V6h20.7L43.3,10.3L43.3,10.3z"/>
+                                       </svg>
+                                    </button>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                      -->
+                      <div class="card-body">
+                         <input [(ngModel)]="searchText" placeholder="Search by owner.." class="advancedSearchTextbox text-center" id="searchInput">
+                         <ul class="nav nav-tabs nav-justified">
+                            <li class="active nav-item active" id="nav-item"><a class="nav-link" data-toggle="tab" href="#all"><b>Transcripts</b></a></li>
+                            
+                            <li class="nav-item" id="nav-item"><a class="nav-link" data-toggle="tab" href="#gt" (click)="setPageGrad(1)"><b>Graduated Transcripts</b></a></li>
+                            
+                            
+                         </ul>
+                         <div class="tab-content">
+                            <div id="all" class="tab-pane active">
+                               <table id="bootstrap-data-table-transcript" class="table table-striped table-bordered" >
+                                  <thead>
+                                     <tr>
+                                        <th class="info text-center align-middle">Student Email</th>
+                                        <th class="info text-center align-middle">Transcript</th>
+                                        <th class="info text-center align-middle">authorized</th>
+                                     </tr>
+                                  </thead>
+                                  <tbody>
+                                     <tr *ngFor="let asset of pagedAllItems | grdFilter: {owner: searchText}; let i = index;">
+                                        <td class="asset-properties text-center align-middle"><b class="text-dark">{{asset.owner}}</b></td>
+                                        <td class="asset-properties">
+                                           <div class="text-center">
+                                              <button type="button" class="btn btn-primary" data-toggle="modal" attr.data-target="#studentTranscript_{{i}}" (click)="setPage(1, asset.course)">
+                                              View student Transcript
+                                              </button>
+                                           </div>
+                                           <!-- Modal -->
+                                           <div class="modal fade" id="studentTranscript_{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                              <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                 <div class="modal-content">
+                                                    <div class="modal-header">
+                                                       <h5 class="modal-title" id="exampleModalLongTitle">Student ID: <b class="text-danger">{{asset.owner}}</b> - Transcript</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                       <table id="tc_table_{{i}}" class="table table-striped table-bordered" >
+                                                          <thead>
+                                                             <tr>
+                                                                <th class="info">Course Name</th>
+                                                                <th class="info">Credits</th>
+                                                                <th class="info">Grade</th>
+                                                             </tr>
+                                                          </thead>
+                                                          <tbody>
+                                                             <tr *ngFor="let element of pagedItems">
+                                                                <td class="asset-properties"><b class="text-uppercase text-dark">{{element.courseName}}</b></td>
+                                                                <td class="asset-properties"><b class="text-dark">{{element.courseCredits}}</b></td>
+                                                                <td class="asset-properties"><b class="text-dark">{{element.courseGrade}}</b></td>
+                                                             </tr>
+                                                             <tr>
+                                                                <td colspan="2"><b class="">Credits total: </b></td>
+                                                                <td class="asset-properties"><b class="">{{asset.creditsTotal}}</b></td>
+                                                             </tr>
+                                                             <tr class="bg-info text-white">
+                                                                <td colspan="2"><b class="">Average: </b></td>
+                                                                <td class="asset-properties"><b class="">{{asset.avg}}</b></td>
+                                                             </tr>
+                                                          </tbody>
+                                                       </table>
+                                                       <button (click)="exportAsPDF('studentTranscript_' + i, 'tc_table_' + i, asset.owner)" type="submit" class="btn btn-success align-middle">Export pdf file</button>
+                                                       <ul *ngIf="pager.pages && pager.pages.length" class="pagination float-right">
+                                                          <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+                                                              <a (click)="setPage(1, asset.course)" class="page-link">First</a>
+                                                          </li>
+                                                          <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+                                                              <a (click)="setPage(pager.currentPage - 1, asset.course)" class="page-link">Previous</a>
+                                                          </li>
+                                                          <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item">
+                                                              <a (click)="setPage(page, asset.course)" class="page-link">{{page}}</a>
+                                                          </li>
+                                                          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+                                                              <a (click)="setPage(pager.currentPage + 1, asset.course)" class="page-link">Next</a>
+                                                          </li>
+                                                          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+                                                              <a (click)="setPage(pager.totalPages, asset.course)" class="page-link">Last</a>
+                                                          </li>
+                                                      </ul>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </td>
+                                        <td class="asset-properties text-center align-middle">{{asset.authorized}}</td>
+                                     </tr>
+                                  </tbody>
+                               </table>
+                               <ul *ngIf="pagerAll.pages && pagerAll.pages.length" class="pagination float-right">
+                                  <li [ngClass]="{disabled:pagerAll.currentPage === 1}" class="page-item">
+                                      <a (click)="setPageAll(1)" class="page-link">First</a>
+                                  </li>
+                                  <li [ngClass]="{disabled:pagerAll.currentPage === 1}" class="page-item">
+                                      <a (click)="setPageAll(pagerAll.currentPage - 1)" class="page-link">Previous</a>
+                                  </li>
+                                  <li *ngFor="let page of pagerAll.pages" [ngClass]="{active:pagerAll.currentPage === page}" class="page-item">
+                                      <a (click)="setPageAll(page)" class="page-link">{{page}}</a>
+                                  </li>
+                                  <li [ngClass]="{disabled:pagerAll.currentPage === pagerAll.totalPages}" class="page-item">
+                                      <a (click)="setPageAll(pagerAll.currentPage + 1)" class="page-link">Next</a>
+                                  </li>
+                                  <li [ngClass]="{disabled:pagerAll.currentPage === pagerAll.totalPages}" class="page-item">
+                                      <a (click)="setPageAll(pagerAll.totalPages)" class="page-link">Last</a>
+                                  </li>
+                              </ul>
+                            </div>
+                            <div id="gt" class="tab-pane fade">
+                               <table id="bootstrap-data-table-transcript" class="table table-striped table-bordered" >
+                                  <thead>
+                                     <tr>
+                                        <th class="info text-center align-middle">Student Email</th>
+                                        <th class="info text-center align-middle">Transcript</th>
+                                        <th class="info text-center align-middle">authorized</th>
+                                     </tr>
+                                  </thead>
+                                  <tbody>
+                                     <tr *ngFor="let asset of pagedGradItems | grdFilter: {owner: searchText}; let i = index;">
+                                        <td class="asset-properties text-center align-middle"><b class="text-dark">{{asset.owner}}</b></td>
+                                        <td class="asset-properties">
+                                           <div class="text-center">
+                                              <button type="button" class="btn btn-primary" data-toggle="modal" attr.data-target="#gt_{{i}}" (click)="setPage(1, asset.course)">
+                                              View student Transcript
+                                              </button>
+                                           </div>
+                                           <!-- Modal -->
+                                           <div class="modal fade" id="gt_{{i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                              <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                 <div class="modal-content">
+                                                    <div class="modal-header">
+                                                       <h5 class="modal-title" id="exampleModalLongTitle">Student ID: <b class="text-danger">{{asset.owner}}</b> - Transcript</h5>
+                                                    </div>
+                                                    <ul class="nav nav-tabs nav-justified">
+                                                       <li class="active nav-item active" id="nav-item">
+                                                         <a class="nav-link" data-toggle="tab" attr.href="#tc_gt_{{i}}">
+                                                           <b>Transcript</b>
+                                                         </a>
+                                                       </li>
+                                                       <ng-container *ngIf="asset.certificateLink">
+                                                         <li class="nav-item" id="nav-item">
+                                                           <a class="nav-link" data-toggle="tab" attr.href="#ct_gt_{{i}}" (click)="dataURItoBlob(asset.certificateLink)">
+                                                             <b>Certificate</b>
+                                                           </a>
+                                                         </li>
+                                                       </ng-container>
+                                                    </ul>
+                                                    <div class="tab-content">
+                                                       <div id="tc_gt_{{i}}" class="tab-pane active">
+                                                        <div class="modal-body">
+                                                           <div id="modelBody">
+                                                             <table id="gt_table_{{i}}" class="table table-striped table-bordered" >
+                                                                <thead>
+                                                                   <tr>
+                                                                      <th class="info">Course Name</th>
+                                                                      <th class="info">Credits</th>
+                                                                      <th class="info">Grade</th>
+                                                                   </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                   <tr *ngFor="let element of pagedItems">
+                                                                      <td class="asset-properties"><b class="text-uppercase text-dark">{{element.courseName}}</b></td>
+                                                                      <td class="asset-properties"><b class="text-dark">{{element.courseCredits}}</b></td>
+                                                                      <td class="asset-properties"><b class="text-dark">{{element.courseGrade}}</b></td>
+                                                                   </tr>
+                                                                   <tr>
+                                                                      <td colspan="2"><b class="">Credits total: </b></td>
+                                                                      <td class="asset-properties"><b class="">{{asset.creditsTotal}}</b></td>
+                                                                   </tr>
+                                                                   <tr class="bg-info text-white">
+                                                                      <td colspan="2"><b class="">Average: </b></td>
+                                                                      <td class="asset-properties"><b class="">{{asset.avg}}</b></td>
+                                                                   </tr>
+                                                                </tbody>
+                                                             </table>
+                                                             <table id="gt_hidden_table_{{i}}" class="table table-striped table-bordered" hidden>
+                                                               <thead>
+                                                                  <tr>
+                                                                     <th class="info">Course Name</th>
+                                                                     <th class="info">Credits</th>
+                                                                     <th class="info">Grade</th>
+                                                                  </tr>
+                                                               </thead>
+                                                               <tbody>
+                                                                  <tr *ngFor="let element of asset.course">
+                                                                     <td class="asset-properties"><b class="text-uppercase text-dark">{{element.courseName}}</b></td>
+                                                                     <td class="asset-properties"><b class="text-dark">{{element.courseCredits}}</b></td>
+                                                                     <td class="asset-properties"><b class="text-dark">{{element.courseGrade}}</b></td>
+                                                                  </tr>
+                                                                  <tr>
+                                                                     <td colspan="2"><b class="">Credits total: </b></td>
+                                                                     <td class="asset-properties"><b class="">{{asset.creditsTotal}}</b></td>
+                                                                  </tr>
+                                                                  <tr class="bg-info text-white">
+                                                                     <td colspan="2"><b class="">Average: </b></td>
+                                                                     <td class="asset-properties"><b class="">{{asset.avg}}</b></td>
+                                                                  </tr>
+                                                               </tbody>
+                                                            </table>
+                                                           </div>
+                                                           <button (click)="exportAsPDF('studentTranscript_' + i, 'gt_hidden_table_' + i, asset.owner)" type="submit" class="btn btn-success align-middle">Export pdf file</button>
+                                                           <ul *ngIf="pager.pages && pager.pages.length" class="pagination float-right">
+                                                              <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+                                                                  <a (click)="setPage(1, asset.course)" class="page-link">First</a>
+                                                              </li>
+                                                              <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+                                                                  <a (click)="setPage(pager.currentPage - 1, asset.course)" class="page-link">Previous</a>
+                                                              </li>
+                                                              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item">
+                                                                  <a (click)="setPage(page, asset.course)" class="page-link">{{page}}</a>
+                                                              </li>
+                                                              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+                                                                  <a (click)="setPage(pager.currentPage + 1, asset.course)" class="page-link">Next</a>
+                                                              </li>
+                                                              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+                                                                  <a (click)="setPage(pager.totalPages, asset.course)" class="page-link">Last</a>
+                                                              </li>
+                                                          </ul>
+                                                        </div>
+                                                      </div>
+                                                       <div id="ct_gt_{{i}}" class="tab-pane fade">
+                                                        <ng-container *ngIf="imageUrl != ''">
+                                                          <div class="modal-body">
+                                                             <div id="modelBody">
+                                                                <img [src]="imageUrl"/>
+                                                             </div>
+                                                          </div>
+                                                        </ng-container>
+                                                      </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </td>
+                                        <td class="asset-properties text-center align-middle">{{asset.authorized}}</td>
+                                     </tr>
+                                  </tbody>
+                               </table>
+                               <ul *ngIf="pagerGrad.pages && pagerGrad.pages.length" class="pagination float-right">
+                                  <li [ngClass]="{disabled:pagerGrad.currentPage === 1}" class="page-item">
+                                      <a (click)="setPageGrad(1)" class="page-link">First</a>
+                                  </li>
+                                  <li [ngClass]="{disabled:pagerGrad.currentPage === 1}" class="page-item">
+                                      <a (click)="setPageGrad(pagerGrad.currentPage - 1)" class="page-link">Previous</a>
+                                  </li>
+                                  <li *ngFor="let page of pagerGrad.pages" [ngClass]="{active:pagerGrad.currentPage === page}" class="page-item">
+                                      <a (click)="setPageGrad(page)" class="page-link">{{page}}</a>
+                                  </li>
+                                  <li [ngClass]="{disabled:pagerGrad.currentPage === pagerGrad.totalPages}" class="page-item">
+                                      <a (click)="setPageGrad(pagerGrad.currentPage + 1)" class="page-link">Next</a>
+                                  </li>
+                                  <li [ngClass]="{disabled:pagerGrad.currentPage === pagerGrad.totalPages}" class="page-item">
+                                      <a (click)="setPageGrad(pagerGrad.totalPages)" class="page-link">Last</a>
+                                  </li>
+                              </ul>
+                            </div>
+                         </div>
+                      </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</ng-container>
+
+<ng-container *ngIf="!authenticated">
+    <div class="container right-panel" id="title">
+      <h1><b>The page you’re looking for does not exist.</b></h1>
+      <h1 class="text-primary"><a href="https://192.168.56.101:4200">Please go back to login page.</a></h1>
+    </div>
+</ng-container>

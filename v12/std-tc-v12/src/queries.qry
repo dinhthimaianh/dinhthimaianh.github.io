@@ -1,0 +1,26 @@
+query getTranscriptByMemberId {
+  description: "Get transcript by member id"
+  statement:
+    SELECT fpt.edu.vn.Transcript
+      WHERE (owner == _$ownerId)
+}
+
+query getTranscriptCopyByMemberId {
+  description: "Get transcript copy by member id"
+  statement:
+    SELECT fpt.edu.vn.TranscriptCopy
+      WHERE (owner == _$ownerId)
+}
+
+query getMemberByEmail {
+  description: "Get member by email"
+  statement:
+    SELECT fpt.edu.vn.Member
+      WHERE (email == _$email)
+}
+
+query getAllTranscriptCopy {
+  description: "Get all transcript copy"
+  statement:
+    SELECT fpt.edu.vn.TranscriptCopy
+}

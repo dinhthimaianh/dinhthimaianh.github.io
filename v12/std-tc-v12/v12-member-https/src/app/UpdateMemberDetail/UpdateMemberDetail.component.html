@@ -1,0 +1,210 @@
+<!--
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<ng-container *ngIf="authenticated && app.role == 'Admin'">
+  <div class="modal fade" id="addTransactionModal" tabindex="-1" role="dialog" aria-labelledby="addTransactionModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="addTransactionModalLabel">Create Transaction</h4>
+          <p class="modal-intro">Enter the required values below.</p>
+        </div>
+        <form [formGroup]="myForm">
+          <div class="modal-body">
+
+
+
+
+
+                <div class="form-group text-left">
+                  <label for="name">name</label>
+
+                    <input formControlName="name" type="text" class="form-control">
+
+                </div>
+
+
+
+
+                <div class="form-group text-left">
+                  <label for="major">major</label>
+
+                    <input formControlName="major" type="text" class="form-control">
+
+                </div>
+
+
+
+
+                <div class="form-group text-left">
+                  <label for="dob">dob</label>
+
+                    <input formControlName="dob" type="text" class="form-control">
+
+                </div>
+
+
+
+
+                <div class="form-group text-left">
+                  <label for="address">address</label>
+
+                    <input formControlName="address" type="text" class="form-control">
+
+                </div>
+
+
+
+
+                <label for="type">type</label>
+                <div class="checkbox">
+
+                    <label>
+                      <input
+
+                          formControlName="type"
+
+                        name="type"
+                        value="Student"
+                        type="radio"
+
+                      />
+                      Student
+                    </label>
+
+                    <label>
+                      <input
+
+                          formControlName="type"
+
+                        name="type"
+                        value="Staff"
+                        type="radio"
+
+                      />
+                      Staff
+                    </label>
+
+                    <label>
+                      <input
+
+                          formControlName="type"
+
+                        name="type"
+                        value="Employee"
+                        type="radio"
+
+                      />
+                      Employee
+                    </label>
+
+                </div>
+
+
+
+
+                <div class="form-group text-left">
+                  <label for="member">member</label>
+
+                      <textarea formControlName="member" class="form-control" rows="3"></textarea>
+
+                </div>
+
+
+
+
+
+
+
+
+
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button (click)="addTransaction(myForm);" type="submit" class="btn btn-success" data-dismiss="modal">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container col-md-6">
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          <strong>Error:</strong> {{errorMessage}}
+      </div>
+
+    <div class="row">
+      <div class="col-md-12">
+          <h1 class="transaction-title" id='transactionName'>UpdateMemberDetail</h1>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            When invoked, this transaction will have the following attributes:
+            <br>
+            <ul>
+
+
+                  <li><span class="attribute"><b>name</b></span></li>
+
+
+
+                  <li><span class="attribute"><b>major</b></span></li>
+
+
+
+                  <li><span class="attribute"><b>dob</b></span></li>
+
+
+
+                  <li><span class="attribute"><b>address</b></span></li>
+
+
+
+                  <li><span class="attribute"><b>type</b></span></li>
+
+
+
+                  <li><span class="attribute"><b>member</b></span></li>
+
+
+
+
+
+
+            </ul>
+          </div>
+        </div>
+        <button (click)="resetForm();" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTransactionModal">Invoke</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="authenticated && app.role != 'Admin'">
+    <div class="container right-panel" id="title">
+      <h1><b>The page you’re looking for does not meet the rights based on your roles.</b></h1><br />
+      <h1><b>Please select the right function in the left panel.</b></h1>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!authenticated">
+    <div class="container" id="title">
+      <h1><b>The page you’re looking for does not exist.</b></h1>
+      <h1 class="text-primary"><a href="https://192.168.56.101:4200">Please go back to login page.</a></h1>
+    </div>
+</ng-container>

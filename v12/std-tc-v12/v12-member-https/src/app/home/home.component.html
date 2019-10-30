@@ -1,0 +1,68 @@
+<!--
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<div *ngIf="app.visible" id="right-panel" class="right-panel align-middle">
+   <div class="container col-sm-10">
+      <div class="content" id="dashBoard">
+          <h1 class="text-center display-1">Digital Transcript</h1>
+          <br/><br/>
+					<img src="assets/images/hyperledger_logo.png" class="img-fluid" alt="Responsive image">
+      </div>
+   </div>
+</div>
+<div *ngIf="!app.visible" id="bg-image"></div>
+<div *ngIf="!app.visible" id="bg-text">
+   <h1 class="text-center display-1" id="title">Digital Transcript</h1>
+   <br/><br/>
+   <div *ngIf="!authenticated && !showImportCard"  id="signIn">
+     <div class="container col-sm-6">
+       <div class="card text-center">
+          <div class="card-header">
+             Sign In
+          </div>
+          <div *ngIf="!showImportCard" class="card-body">
+             <h5 class="card-title">Before going deeper..</h5>
+             <p class="card-text">You have to authenticated via Github.com.</p>
+             <a href="https://192.168.56.101:3000/auth/github" class="btn btn-primary">Sign in with Github</a>
+          </div>
+       </div>
+     </div>
+   </div>
+   <div *ngIf="!authenticated && showImportCard" id="signIn">
+     <div class="container col-sm-6">
+      <form (ngSubmit)="onSignUp()" #signupForm="ngForm">
+          <div class="card text-center">
+             <div class="card-header">
+                Sign Up
+             </div>
+             <div class="card-body">
+                <h5 class="card-title">Oh wait..</h5>
+                <p class="card-text">You have not identified, please enter your email and sign up.</p>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" (change)="fileChange($event)" class="custom-file-input" id="inputGroupFile01">
+                    <label *ngIf="file" class="custom-file-label" for="inputGroupFile01">{{file.name}}</label>
+                    <label *ngIf="!file" class="custom-file-label" for="inputGroupFile01">Choose Achieve File</label>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+             </div>
+          </div>
+      </form>
+    </div>
+   </div>
+</div>

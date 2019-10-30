@@ -1,0 +1,89 @@
+namespace fpt.edu.vn
+
+
+enum TypeOfMember {
+    o Student
+    o Staff
+    o Employee
+}
+
+participant Member identified by email {
+    o String email
+    o String memberCode optional
+    o String name  optional
+    o String major optional
+    o DateTime dob default="1900-01-01" optional
+    o String address optional
+    o TypeOfMember type
+}
+
+asset Course identified by courseID{
+  o String courseID
+  o String courseName
+  o Integer courseCredits optional
+  o Double courseGrade optional
+}
+
+asset Transcript identified by owner {
+    o String owner
+    o Course[] course optional
+    o Double avg optional
+    o Integer creditsTotal optional
+  	o String certificateLink optional
+}
+
+asset TranscriptCopy identified by owner {
+    o String owner
+    o Course[] course optional
+    o Double avg optional
+    o String[] authorized optional
+    o Integer creditsTotal optional
+  	o String certificateLink optional
+}
+
+asset HistorianData identified by transactionId {
+  o String	transactionId
+  o String 	transactionType
+  o String 	transactionInvoked
+  o String 	participantInvoking  optional
+  o String	identityUsed         optional
+  o DateTime	transactionTimestamp
+}
+
+abstract transaction MemberTransaction {
+    --> Member member
+}
+
+abstract transaction TranscriptTransaction {
+}
+
+transaction UpdateMemberDetail extends MemberTransaction{
+  o String name
+  o String major
+  o DateTime dob
+  o String address
+  o TypeOfMember type
+}
+
+transaction AuthorizeTranscriptAccess extends TranscriptTransaction{
+  o String memberId
+}
+
+transaction RequestTranscriptCopy extends TranscriptTransaction{
+  o String reason
+}
+
+transaction AddManyMembers {
+  o Member[] data
+}
+
+transaction AddManyTranscripts {
+  o Transcript[] data
+}
+
+transaction RemoveAllTranscriptCopy {
+}
+
+transaction AddManyCourses {
+  o Course[] data
+}

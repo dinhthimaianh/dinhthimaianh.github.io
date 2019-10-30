@@ -1,0 +1,183 @@
+rule SystemACL {
+    description: "System ACL to permit all access"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule AllowStaffAccessTranscripts {
+    description: "Grant access for staff"
+    participant(p): "fpt.edu.vn.Member"
+    operation: ALL
+    resource: "fpt.edu.vn.Transcript"
+  	condition: (p.type === "Staff")
+    action: ALLOW
+}
+
+rule AllowStaffSubmitAddManyTranscripts {
+    description: "Grant access for staff"
+    participant(p): "fpt.edu.vn.Member"
+    operation: CREATE
+    resource: "fpt.edu.vn.AddManyTranscripts"
+  	condition: (p.type === "Staff")
+    action: ALLOW
+}
+
+rule AllowStaffCreateTranscript {
+    description: "Grant access for staff"
+    participant(p): "fpt.edu.vn.Member"
+    operation: CREATE,READ
+    resource: "fpt.edu.vn.Transcript"
+  	transaction: "fpt.edu.vn.AddManyTranscripts"
+  	condition: (p.type === "Staff")
+    action: ALLOW
+}
+
+rule AllowStaffAccessCourses {
+    description: "Grant access for staff"
+    participant(p): "fpt.edu.vn.Member"
+    operation: READ
+    resource: "fpt.edu.vn.Course"
+  	condition: (p.type === "Staff")
+    action: ALLOW
+}
+
+rule DenyEmployeeSubmitTransactions {
+    description: "Deny employees submit transactions"
+    participant(p): "fpt.edu.vn.Member"
+    operation: CREATE
+    resource: "fpt.edu.vn.*"
+ 	condition: (p.type === "Employee")
+    action: DENY
+}
+
+rule OwnTranscriptReadAccess {
+    description: "Allow all participants read access only to their own transcript assets"
+    participant(p): "fpt.edu.vn.Member"
+    operation: READ
+    resource(r): "fpt.edu.vn.Transcript"
+    condition: (r.owner === p.getIdentifier())
+    action: ALLOW
+}
+
+rule OwnTCReadAccess {
+    description: "Allow all participants read access only to their own transcript copy assets"
+    participant(p): "fpt.edu.vn.Member"
+    operation: READ
+    resource(r): "fpt.edu.vn.TranscriptCopy"
+    condition: (r.owner === p.getIdentifier())
+    action: ALLOW
+}
+
+rule UpdateTCByATA {
+    description: "Allow member update authorizer his transcript"
+    participant(p): "fpt.edu.vn.Member"
+    operation: UPDATE
+    resource(r): "fpt.edu.vn.TranscriptCopy"
+  	transaction: "fpt.edu.vn.AuthorizeTranscriptAccess"
+    condition: (r.owner === p.getIdentifier())
+    action: ALLOW
+}
+
+rule AuthorizeTranscriptAccess {
+    description: "Allow student submit AuthorizeTranscriptAccess transaction"
+    participant(p): "fpt.edu.vn.Member"
+    operation: CREATE
+    resource: "fpt.edu.vn.AuthorizeTranscriptAccess"
+  	condition: (p.type === "Student")
+    action: ALLOW
+}
+
+rule ReadOtherMemberByATA {
+    description: "Allow member read other member details when submit AuthorizeTranscriptAccess transaction"
+    participant(p): "fpt.edu.vn.Member"
+    operation: ALL
+    resource(r): "fpt.edu.vn.Member"
+  	transaction: "fpt.edu.vn.AuthorizeTranscriptAccess"
+    condition: (true)
+    action: ALLOW
+}
+
+
+rule CreateTCByRequestTranscriptCopy {
+    description: "Allow member access to his transcript"
+    participant(p): "fpt.edu.vn.Member"
+    operation: CREATE
+    resource(r): "fpt.edu.vn.TranscriptCopy"
+  	transaction: "fpt.edu.vn.RequestTranscriptCopy"
+    condition: (p.type === "Student")
+    action: ALLOW
+}
+
+rule RequestTranscriptCopy {
+    description: "Allow members submit RequestTranscriptCopy transaction"
+    participant(p): "fpt.edu.vn.Member"
+    operation: CREATE
+    resource: "fpt.edu.vn.RequestTranscriptCopy"
+  	condition: (p.type === "Student")
+    action: ALLOW
+}
+
+rule UpdateTranscriptByRTC {
+    description: "Allow members update their transcript by submited RequestTranscriptCopy transaction"
+    participant(p): "fpt.edu.vn.Member"
+    operation: UPDATE
+    resource(r): "fpt.edu.vn.Transcript"
+  	transaction: "fpt.edu.vn.RequestTranscriptCopy"
+  	condition: (p.type === "Student")
+    action: ALLOW
+}
+
+rule ForeignDegreeConditionalAccess {
+    description: "Allow participants access to other people's transcript if granted"
+    participant (p): "fpt.edu.vn.Member"
+    operation: READ
+    resource(r): "fpt.edu.vn.TranscriptCopy"
+    condition: (r.authorized && r.authorized.indexOf(p.getIdentifier()) > -1)
+    action: ALLOW
+}
+
+rule OwnRecordFullAccess {
+    description: "Allow all participants full access to their own record"
+    participant(p): "fpt.edu.vn.Member"
+    operation: READ
+    resource(r): "fpt.edu.vn.Member"
+    condition: (r.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+
+rule DenyMemberReadCourse {
+    description: "Deny all member read Course asset "
+    participant(p): "fpt.edu.vn.Member"
+    operation: READ
+    resource: "fpt.edu.vn.Course"
+  	condition: (p.type === "Student" && p.type === "Employee")
+    action: DENY
+}
+
+rule DenyMemberReadHistorianData {
+    description: "Deny all member read Course asset "
+    participant(p): "fpt.edu.vn.Member"
+    operation: READ
+    resource: "fpt.edu.vn.HistorianData"
+  	condition: (p.type === "Student" && p.type === "Employee")
+    action: DENY
+}
