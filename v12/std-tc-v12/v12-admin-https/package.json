@@ -41,7 +41,7 @@
     "file-saver": "^2.0.2",
     "http-proxy-middleware": "^0.18.0",
     "ipfs-http-client": "^33.1.1",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "rxjs": "^5.1.0",
     "tether": "^1.4.0",
     "text-encoding": "^0.7.0",
